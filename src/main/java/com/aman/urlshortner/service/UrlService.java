@@ -18,7 +18,11 @@ public class UrlService {
 
     public String shortenUrl(String originalUrl) {
 
-        String shortCode = ShortCodeGenerator.generateShortCode();
+        String shortCode;
+
+        do {
+            shortCode = ShortCodeGenerator.generateShortCode();
+        } while (urlRepository.findByShortCode(shortCode).isPresent());
 
         UrlMapping urlMapping = new UrlMapping();
         urlMapping.setOriginalUrl(originalUrl);

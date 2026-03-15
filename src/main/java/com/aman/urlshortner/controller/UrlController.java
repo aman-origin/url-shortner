@@ -4,7 +4,11 @@ import com.aman.urlshortner.dto.ShortenRequest;
 import com.aman.urlshortner.dto.ShortenResponse;
 import com.aman.urlshortner.service.UrlService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("/api/url")
@@ -25,4 +29,17 @@ public class UrlController {
 
         return new ShortenResponse(shortUrl);
     }
+
+    @GetMapping("/{shortCode}")
+    public ResponseEntity<Void> redirect(@PathVariable String shortCode) {
+
+        String originalUrl = urlService.getOriginalUrl(shortCode);
+
+        return ResponseEntity
+                .status(HttpStatus.FOUND)
+                .location(URI.create(originalUrl))
+                .build();
+    }
+
 }
+

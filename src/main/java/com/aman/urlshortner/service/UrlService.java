@@ -29,4 +29,11 @@ public class UrlService {
 
         return shortCode;
     }
+
+    public String getOriginalUrl(String shortCode) {
+
+        return urlRepository.findByShortCode(shortCode)
+                .map(UrlMapping::getOriginalUrl)
+                .orElseThrow(() -> new RuntimeException("Short URL not found"));
+    }
 }

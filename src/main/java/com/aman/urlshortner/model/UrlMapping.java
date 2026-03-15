@@ -23,4 +23,6 @@ public class UrlMapping {
     private String shortCode;
 
     private LocalDateTime createdAt;
+
+    private Long clickCount = 0L;
 }

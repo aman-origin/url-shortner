@@ -36,8 +36,15 @@ public class UrlService {
 
     public String getOriginalUrl(String shortCode) {
 
-        return urlRepository.findByShortCode(shortCode)
-                .map(UrlMapping::getOriginalUrl)
+        UrlMapping mapping = urlRepository.findByShortCode(shortCode)
                 .orElseThrow(() -> new RuntimeException("Short URL not found"));
+
+        mapping.setClickCount(mapping.getClickCount() + 1);
+
+        urlRepository.save(mapping);
+
+        return mapping.getOriginalUrl();
     }
+
+
 }
